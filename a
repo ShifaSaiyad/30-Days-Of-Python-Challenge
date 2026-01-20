@@ -1,0 +1,15 @@
+if __name__ == '__main__':
+    a = []
+    for _ in range(int(input())):
+        name = input()
+        score = float(input())
+        l = [name,score]
+        a.append((l))
+
+        
+    print(a)
+    max1 = max(list(a))
+    a.remove(max1)
+    max2 = max(list(a))
+    print(max2)
+    print(a)
