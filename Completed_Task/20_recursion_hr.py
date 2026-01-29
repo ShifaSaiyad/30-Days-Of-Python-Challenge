@@ -6,7 +6,6 @@ import random
 import re
 import sys
 
-#
 # Complete the 'factorial' function below.
 #
 # The function is expected to return an INTEGER.
@@ -22,4 +21,4 @@ def factorial(n):
 if __name__ == '__main__':
     n  = int(input().strip())
     result = factorial(n)
-    print(result)
+    print("result",result)
