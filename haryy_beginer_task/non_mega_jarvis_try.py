@@ -16,7 +16,7 @@ r = sr.Recognizer()
 
 # Async speak function using edge-tts
 async def speak(text):
-    print(f"jarvis : {text}")
+    print(f"meera : {text}")
     try:
         # 1. Generate the speech file
         communicate = edge_tts.Communicate(text, VOICE)
@@ -31,24 +31,27 @@ async def speak(text):
         while pygame.mixer.music.get_busy():
             await asyncio.sleep(0.1)
         
-        # 4. Explicitly stop and quit the mixer to release the file lock
+        # 4. Stop music and UNLOAD the file (Crucial for Windows)
         pygame.mixer.music.stop()
+        pygame.mixer.music.unload() # This releases the file lock
         pygame.mixer.quit()
 
-        # 5. Add a small delay to ensure the OS releases the file handle completely
-        time.sleep(0.1) 
+        # 5. Small delay to let the OS catch up
+        await asyncio.sleep(0.2) 
         
-        # 6. Clean up the file after playback
+        # 6. Clean up the file
         if os.path.exists(OUTPUT_FILE):
             os.remove(OUTPUT_FILE)
-            
 
     except Exception as e:
         print(f"Speech generation/playback error: {e}")
-        # Ensure cleanup even if an error occurs during playback/loading
-        if os.path.exists(OUTPUT_FILE):
-            os.remove(OUTPUT_FILE)
-
+        # Attempt cleanup if something failed
+        try:
+            pygame.mixer.quit()
+            if os.path.exists(OUTPUT_FILE):
+                os.remove(OUTPUT_FILE)
+        except:
+            pass
 # Process command function (now async to call speak)
 async def processCommand(c):
     c = c.lower()
@@ -109,8 +112,7 @@ async def main():   # Main async function USED TO  run the loop when i call meer
                 r.adjust_for_ambient_noise(source, duration=0.5)
                 print("\nListening..... ")
                 
-                # Listen for the wake word
-                audio = r.listen(source, timeout=5, phrase_time_limit=2)
+                audio = r.listen(source, timeout=5, phrase_time_limit=2) # Listen for the wake word when it call
                 word = r.recognize_google(audio)
                 print(f"Heard wake word: {word}")
 
@@ -135,5 +137,7 @@ async def main():   # Main async function USED TO  run the loop when i call meer
             break
 
 if __name__ == "__main__":
-    # This is the entry point for running the async program
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("Program interrupted safely. Exiting...")
