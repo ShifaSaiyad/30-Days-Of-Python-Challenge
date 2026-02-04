@@ -19,4 +19,4 @@ a = [int(e) for e in input().split(' ')]
 d = Difference(a)
 d.computeDifference()
 
-print(d.maximumDifference)
+print(d.)
