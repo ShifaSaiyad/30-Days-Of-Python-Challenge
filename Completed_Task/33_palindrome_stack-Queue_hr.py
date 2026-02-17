@@ -42,7 +42,7 @@ for i in range(l // 2):
     if obj.popCharacter()!=obj.dequeueCharacter():
         isPalindrome=False
         break
-#finally print whether string s is palindrome or not.
+#finally print whether string s is palindrome or not..
 if isPalindrome:
     print("The word, "+s+", is a palindrome.")
 else:
