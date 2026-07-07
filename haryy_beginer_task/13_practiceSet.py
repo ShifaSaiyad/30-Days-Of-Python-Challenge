@@ -5,7 +5,7 @@ mob_no = int(input("mobile number"))
 a = "a name of the student is {}. marks of a student is {} and the mobile number is {}".format(name, marks,mob_no)
 print(a)'''
 
-
+print('hello')
 
 #3]
 l = [7*i for i in range(1,11)]
